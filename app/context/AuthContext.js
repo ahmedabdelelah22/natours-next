@@ -1,4 +1,3 @@
-// context/AuthContext.jsx
 'use client'
 import { createContext, useContext, useEffect, useState } from 'react';
 import { getMe } from '../_lib/api';
@@ -10,50 +9,33 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // on refresh → read token from localStorage
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      getMe(token).then(user => {
-        setUser(user);
-        setLoading(false);
-      });
-    } else {
+    // No localStorage — ask backend if we're logged in via cookie
+    getMe().then(user => {
+      setUser(user || null);
       setLoading(false);
-    }
+    });
   }, []);
 
   const login = async (email, password) => {
     const { loginUser } = await import('../_lib/api');
     const data = await loginUser(email, password);
-    localStorage.setItem('jwt', data.token); // ← save token
-    const user = await getMe(data.token);
+    // No localStorage — cookie is set by backend automatically
+    const user = await getMe();
     setUser(user);
     return user;
   };
 
-  const logout = () => {
-    localStorage.removeItem('jwt'); // ← clear token
+  const logout = async () => {
+    const { logoutUser } = await import('../_lib/api');
+    await logoutUser(); // clears the cookie on backend
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading ,setUser}}>
+    <AuthContext.Provider value={{ user, login, logout, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export const useAuth = () => useContext(AuthContext);
-
-// ❌ login from api.js
-//    → calls API ✅
-//    → saves token in localStorage ✅
-//    → but user NOT set in context ❌
-//    → Navbar shows no user after login ❌
-
-// ✅ login from AuthContext
-//    → calls API ✅
-//    → saves token in localStorage ✅
-//    → fetches user via getMe() ✅
-//    → sets user in context ✅
-//    → Navbar shgows user name ✅
