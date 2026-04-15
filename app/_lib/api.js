@@ -22,6 +22,7 @@ export async function loginUser(email, password) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include", // 🔥 THIS IS THE FIX
     body: JSON.stringify({ email, password }),
   });
 
