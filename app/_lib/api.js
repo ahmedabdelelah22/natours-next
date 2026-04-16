@@ -14,7 +14,7 @@ export const getTour = async (id) => {
   return data.data;
 };
 export async function signUp(name,email, password,passwordConfirm) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_RAILWAY_URL}/api/v1/users/signup`, {
+  const res = await fetch(`${API}/users/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include', // cookie is set here
