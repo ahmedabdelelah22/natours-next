@@ -4,7 +4,7 @@ const nextConfig = {
     return [
       {
         source: '/backend/:path*',
-        destination: 'https://natours-production-b3f7.up.railway.app/api/v1/:path*',
+        destination: 'https://natours-production-b3f7.up.railway.app/api/:path*',
       },
     ];
   },
