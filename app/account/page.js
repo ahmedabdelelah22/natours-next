@@ -4,7 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import { updateMe, updatePassword } from "../_lib/api"; // ← import from api.js
 import NavItem from "../_components/NavItem";
 import toast from "react-hot-toast";
-import { getUserPhotoUrl } from '../_lib/api';
+import { getUserPhotoUrl } from "../_lib/api";
+import Image from "next/image";
 
 export default function AccountPage() {
   const { user, setUser } = useAuth();
@@ -28,14 +29,13 @@ export default function AccountPage() {
 
     try {
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      if (photo) formData.append('photo', photo);
+      formData.append("name", name);
+      formData.append("email", email);
+      if (photo) formData.append("photo", photo);
 
       const updatedUser = await updateMe(formData); // ← from api.js
-      setUser(updatedUser);                          // ← update context
-      toast.success('Account updated successfully!');
-
+      setUser(updatedUser); // ← update context
+      toast.success("Account updated successfully!");
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -49,21 +49,21 @@ export default function AccountPage() {
     setPassLoading(true);
 
     try {
-      const data = await updatePassword(  // ← from api.js
+      const data = await updatePassword(
+        // ← from api.js
         currentPassword,
         newPassword,
-        confirmPassword
+        confirmPassword,
       );
 
       // save new token
-      localStorage.setItem('jwt', data.token);
-      toast.success('Password updated successfully!');
+      localStorage.setItem("jwt", data.token);
+      toast.success("Password updated successfully!");
 
       // clear fields
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -74,7 +74,6 @@ export default function AccountPage() {
   return (
     <main className="main">
       <div className="user-view">
-
         {/* SIDEBAR */}
         <nav className="user-view__menu">
           <ul className="side-nav">
@@ -97,14 +96,17 @@ export default function AccountPage() {
         </nav>
 
         <div className="user-view__content">
-
           {/* UPDATE DATA FORM */}
           <div className="user-view__form-container">
-            <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
+            <h2 className="heading-secondary ma-bt-md">
+              Your account settings
+            </h2>
 
             <form className="form form-user-data" onSubmit={handleUpdateData}>
               <div className="form__group">
-                <label className="form__label" htmlFor="name">Name</label>
+                <label className="form__label" htmlFor="name">
+                  Name
+                </label>
                 <input
                   id="name"
                   className="form__input"
@@ -116,7 +118,9 @@ export default function AccountPage() {
               </div>
 
               <div className="form__group ma-bt-md">
-                <label className="form__label" htmlFor="email">Email</label>
+                <label className="form__label" htmlFor="email">
+                  Email
+                </label>
                 <input
                   id="email"
                   className="form__input"
@@ -128,10 +132,12 @@ export default function AccountPage() {
               </div>
 
               <div className="form__group form__photo-upload">
-                <img
+                <Image
                   className="form__user-photo"
                   src={getUserPhotoUrl(user?.photo)}
                   alt="User"
+                  width={50}
+                  height={50}
                 />
                 <input
                   className="form__upload"
@@ -144,8 +150,11 @@ export default function AccountPage() {
               </div>
 
               <div className="form__group right">
-                <button className="btn btn--small btn--green" disabled={dataLoading}>
-                  {dataLoading ? 'Saving...' : 'Save settings'}
+                <button
+                  className="btn btn--small btn--green"
+                  disabled={dataLoading}
+                >
+                  {dataLoading ? "Saving..." : "Save settings"}
                 </button>
               </div>
             </form>
@@ -157,7 +166,10 @@ export default function AccountPage() {
           <div className="user-view__form-container">
             <h2 className="heading-secondary ma-bt-md">Password change</h2>
 
-            <form className="form form-user-settings" onSubmit={handleUpdatePassword}>
+            <form
+              className="form form-user-settings"
+              onSubmit={handleUpdatePassword}
+            >
               <div className="form__group">
                 <label className="form__label" htmlFor="password-current">
                   Current password
@@ -207,13 +219,15 @@ export default function AccountPage() {
               </div>
 
               <div className="form__group right">
-                <button className="btn btn--small btn--green" disabled={passLoading}>
-                  {passLoading ? 'Saving...' : 'Save password'}
+                <button
+                  className="btn btn--small btn--green"
+                  disabled={passLoading}
+                >
+                  {passLoading ? "Saving..." : "Save password"}
                 </button>
               </div>
             </form>
           </div>
-
         </div>
       </div>
     </main>

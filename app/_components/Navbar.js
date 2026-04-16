@@ -60,7 +60,7 @@ export default function Navbar() {
               Log in
             </Link>
 
-            <Link href="#" className="nav__el nav__el--cta">
+            <Link href="/signup" className="nav__el nav__el--cta">
               Sign up
             </Link>
           </>

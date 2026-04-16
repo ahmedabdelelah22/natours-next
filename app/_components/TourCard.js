@@ -21,6 +21,7 @@ export default function TourCard({ tour }) {
             alt={tour.name}
             width={500}
             height={300}
+            priority
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>

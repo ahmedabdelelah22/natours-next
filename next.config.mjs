@@ -3,7 +3,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
+        source: '/backend/:path*',
         destination: 'https://natours-production-b3f7.up.railway.app/api/:path*',
       },
     ];
@@ -13,6 +13,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'natours-production-b3f7.up.railway.app',
+        pathname: '/img/**',
       },
     ],
   },

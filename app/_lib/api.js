@@ -13,7 +13,17 @@ export const getTour = async (id) => {
   const data = await res.json();
   return data.data;
 };
-
+export async function signUp(name,email, password,passwordConfirm) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_RAILWAY_URL}/api/v1/users/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include', // cookie is set here
+    body: JSON.stringify({ name,email, password ,passwordConfirm}),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'signUp failed');
+  return data;
+}
 export async function loginUser(email, password) {
   const res = await fetch(`${API}/users/login`, {
     method: 'POST',
@@ -29,14 +39,18 @@ export async function loginUser(email, password) {
 // No token param — reads cookie automatically
 export const getMe = async () => {
   try {
+
     const res = await fetch(`${API}/users/me`, {
       credentials: 'include', // sends cookie
       cache: 'no-store',
     });
+
     if (!res.ok) return null;
     const data = await res.json();
+
     return data.data.user;
-  } catch {
+  } catch(err) {
+
     return null;
   }
 };

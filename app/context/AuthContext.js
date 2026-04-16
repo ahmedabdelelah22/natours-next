@@ -9,13 +9,15 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // No localStorage — ask backend if we're logged in via cookie
     getMe().then(user => {
       setUser(user || null);
       setLoading(false);
     });
   }, []);
-
+const signup = async (name,email, password,passwordConfirm) => {
+    const { signUp } = await import('../_lib/api');
+    await signUp(name,email, password,passwordConfirm);
+  };
   const login = async (email, password) => {
     const { loginUser } = await import('../_lib/api');
     const data = await loginUser(email, password);
@@ -32,7 +34,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, setUser }}>
+    <AuthContext.Provider value={{ user, login, logout, signup,loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,13 +5,14 @@ export default function TourHeader({ tour }) {
 
   return (
     <section className="section-header">
-      <div className="header__hero">
+      <div className="header__hero" style={{ position: 'relative' }}> {/* ← fix here */}
         <div className="header__hero-overlay">&nbsp;</div>
 
         <Image
           src={`/img/tours/${tour.imageCover}`}
           alt={tour.name}
           fill
+          priority
           className="header__hero-img"
         />
       </div>
@@ -26,9 +27,7 @@ export default function TourHeader({ tour }) {
             <svg className="heading-box__icon">
               <use href="/img/icons.svg#icon-clock" />
             </svg>
-            <span className="heading-box__text">
-              {tour.duration} days
-            </span>
+            <span className="heading-box__text">{tour.duration} days</span>
           </div>
 
           <div className="heading-box__detail">
